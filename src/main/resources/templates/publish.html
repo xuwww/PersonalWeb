@@ -55,17 +55,32 @@
             <form action="/publish" method="post">
                 <div class="form-group">
                     <label for="title">问题标题</label>
-                    <input type="text" class="form-control" name="title" id="title" placeholder="问题标题">
+                    <input type="text" class="form-control" th:value="${title}" name="title" id="title"
+                           placeholder="问题标题">
                 </div>
                 <div class="form-group">
                     <label for="title">问题补充</label>
-                    <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
+                    <label for="description"></label>
+                    <textarea name="description" id="description" th:text="${description}" class="form-control"
+                              cols="30" rows="10"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="title">添加标签：</label>
-                    <input type="text" class="form-control" name="tag" id="tag" placeholder="输入标签，以逗号隔开">
+                    <input type="text" class="form-control" th:value="${tag}" name="tag" id="tag"
+                           placeholder="输入标签，以逗号隔开">
                 </div>
-                <button type="submit" class="btn btn-success btn-publish">发布</button>
+
+                <div class="container-fluid main">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                            <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12"  th:text="${error}" th:if="${error!=null}">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-success btn-publish ">发布</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
