@@ -1,0 +1,3 @@
+2020-02-29 21:10:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "QUESTION" not found; SQL statement:
+insert into question (title,description,gmt_create,gmt_modified,creator,tag) values (?,?,?,?,?,?) [42102-200]
