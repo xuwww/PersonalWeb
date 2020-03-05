@@ -19,4 +19,7 @@ public interface UserMapper {
 
     @Select("select * from user where token = #{token}")
     User findByToken(@Param("token") String token);
+
+    @Select("select count(1) from user where name = #{name}")
+    Integer findByName(@Param("name") String name);
 }

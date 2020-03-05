@@ -17,7 +17,7 @@ public class RegisterController {
     UserMapper userMapper;
 
     @GetMapping("/register")
-    public String register(){
+    public String register() {
         return "register";
     }
 
@@ -25,21 +25,32 @@ public class RegisterController {
     public String doRegister(@RequestParam("accountId") String accountId,
                              @RequestParam("password") String password,
                              @RequestParam("name") String name,
-                             Model model){
-        model.addAttribute("accountId",accountId);
-        model.addAttribute("password",password);
-        model.addAttribute("name",name);
-//        model.addAttribute("avatarUrl",avatarUrl);暂不支持
-        if(null==accountId||accountId.equals("")){
-            model.addAttribute("error","用户名不能为空");
+                             Model model) {
+        model.addAttribute("accountId", accountId);
+        model.addAttribute("password", password);
+        model.addAttribute("name", name);
+        if (null == accountId || accountId.equals("")) {
+            model.addAttribute("error", "用户名不能为空");
             return "register";
         }
-        if(null==password||password.equals("")) {
+        if (null == password || password.equals("")) {
             model.addAttribute("error", "密码不能为空");
             return "register";
         }
-        if(null==name||name.equals("")){
-            model.addAttribute("error","昵称不能为空");
+        if (null == name || name.equals("")) {
+            model.addAttribute("error", "昵称不能为空");
+            return "register";
+        }
+
+        User userPresent = userMapper.findByAccountId(accountId);
+        if (null != userPresent) {
+            model.addAttribute("error", "用户名已存在");
+            return "register";
+        }
+
+        Integer namePresent = userMapper.findByName(name);
+        if(namePresent > 0){
+            model.addAttribute("error","昵称已存在");
             return "register";
         }
 
