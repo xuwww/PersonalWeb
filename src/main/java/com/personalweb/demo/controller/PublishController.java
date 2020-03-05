@@ -2,12 +2,15 @@ package com.personalweb.demo.controller;
 
 import com.personalweb.demo.mapper.QuestionMapper;
 import com.personalweb.demo.model.Question;
+import com.personalweb.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PublishController {
@@ -24,8 +27,12 @@ public class PublishController {
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
+            HttpServletRequest request,
             Model model) {
-
+        User user = (User) request.getSession().getAttribute("user");
+        if(null == user){
+            return "redirect:/signIn";
+        }
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
@@ -48,7 +55,7 @@ public class PublishController {
         question.setDescription(title);
         question.setTag(tag);
         question.setDescription(description);
-        question.setCreator(1);
+        question.setCreator(user.getId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified((long) 0);
         questionMapper.create(question);

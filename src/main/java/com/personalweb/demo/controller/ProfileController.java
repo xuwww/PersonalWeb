@@ -1,7 +1,6 @@
 package com.personalweb.demo.controller;
 
 import com.personalweb.demo.dto.PaginationDTO;
-import com.personalweb.demo.mapper.UserMapper;
 import com.personalweb.demo.model.User;
 import com.personalweb.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class ProfileController {
-    @Autowired
-    private UserMapper userMapper;
+
     @Autowired
     private QuestionService questionService;
 
@@ -22,8 +22,12 @@ public class ProfileController {
     public String profile(@PathVariable(name = "action") String action,
                           Model model,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
-                          @RequestParam(name = "size", defaultValue = "5") Integer size) {
-        User user = null;
+                          @RequestParam(name = "size", defaultValue = "5") Integer size,
+                          HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        if(null == user){
+            return "redirect:/signIn";
+        }
         if ("question".equals(action)) {
             model.addAttribute("section", "question");
             model.addAttribute("sectionName", "我的提问");
@@ -32,7 +36,7 @@ public class ProfileController {
             model.addAttribute("sectionName", "最新回复");
         }
 
-        PaginationDTO paginationDTO = questionService.list(1, page, size);
+        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
         model.addAttribute("pagination", paginationDTO);
         return "profile";
     }
