@@ -2,6 +2,7 @@ package com.personalweb.demo.controller;
 
 import com.personalweb.demo.mapper.UserMapper;
 import com.personalweb.demo.model.User;
+import com.personalweb.demo.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -42,14 +44,18 @@ public class RegisterController {
             return "register";
         }
 
-        User userPresent = userMapper.findByAccountId(accountId);
-        if (null != userPresent) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andAccountIdEqualTo(accountId);
+        List<User> userPresent = userMapper.selectByExample(userExample);
+        if (userPresent.size() != 0) {
             model.addAttribute("error", "用户名已存在");
             return "register";
         }
 
-        Integer namePresent = userMapper.findByName(name);
-        if(namePresent > 0){
+        UserExample userExample1 = new UserExample();
+        userExample1.createCriteria().andNameEqualTo(name);
+        List<User> namePresent = userMapper.selectByExample(userExample1);
+        if(namePresent.size() != 0){
             model.addAttribute("error","昵称已存在");
             return "register";
         }
@@ -63,7 +69,6 @@ public class RegisterController {
         user.setToken(UUID.randomUUID().toString());
         user.setAvatarUrl("/imgs/defaultUser.png");
         userMapper.insert(user);
-
         return "redirect:/signIn";
     }
 
