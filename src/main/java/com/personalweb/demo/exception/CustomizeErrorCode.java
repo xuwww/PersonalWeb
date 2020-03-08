@@ -9,6 +9,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     SYS_ERROR(2004,"别骂了，别骂了，已经在修了"),
     TYPE_PARAM_WRONG(2005,"评论类型不存在"),
     COMMENT_NOT_FOUND(2006,"回复评论不存在"),
+    CONTENT_IS_EMPTY(2007,"输入内容不能为空")
     ;
 
     @Override
