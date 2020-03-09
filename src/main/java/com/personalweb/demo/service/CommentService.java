@@ -4,10 +4,7 @@ import com.personalweb.demo.dto.CommentDTO;
 import com.personalweb.demo.enums.CommentTypeEnum;
 import com.personalweb.demo.exception.CustomizeErrorCode;
 import com.personalweb.demo.exception.CustomizeException;
-import com.personalweb.demo.mapper.CommentMapper;
-import com.personalweb.demo.mapper.QuestionExtMapper;
-import com.personalweb.demo.mapper.QuestionMapper;
-import com.personalweb.demo.mapper.UserMapper;
+import com.personalweb.demo.mapper.*;
 import com.personalweb.demo.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,9 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentExtMapper commentExtMapper;
+
     @Transactional
     public void insert(Comment comment) {
         if (null == comment.getParentId() || comment.getParentId() == 0) {
@@ -51,6 +51,9 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+
+            dbComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(dbComment);
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
