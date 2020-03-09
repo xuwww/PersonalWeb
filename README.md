@@ -12,3 +12,4 @@ alt+f7 搜索依赖
 雷丰阳 错误处理
 debug alt+f8 执行
 拼接dom
+viewE 双向绑定

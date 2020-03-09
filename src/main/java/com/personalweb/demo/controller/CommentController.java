@@ -3,6 +3,7 @@ package com.personalweb.demo.controller;
 import com.personalweb.demo.dto.CommentCreateDTO;
 import com.personalweb.demo.dto.CommentDTO;
 import com.personalweb.demo.dto.ResultDTO;
+import com.personalweb.demo.enums.CommentTypeEnum;
 import com.personalweb.demo.exception.CustomizeErrorCode;
 import com.personalweb.demo.mapper.CommentMapper;
 import com.personalweb.demo.model.Comment;
@@ -11,12 +12,10 @@ import com.personalweb.demo.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -51,5 +50,12 @@ public class CommentController {
         comment.setLikeCount(0L);
         commentService.insert(comment);
         return ResultDTO.successOf();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name="id") Long id){
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.successOf(commentDTOS);
     }
 }
