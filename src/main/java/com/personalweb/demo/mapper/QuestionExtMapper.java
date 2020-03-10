@@ -2,9 +2,13 @@ package com.personalweb.demo.mapper;
 
 import com.personalweb.demo.model.Question;
 
+import java.util.List;
+
 public interface QuestionExtMapper {
 
     int incView(Question record);
+
     int incCommentCount(Question record);
 
+    List<Question> selectRelated(Question record);
 }
