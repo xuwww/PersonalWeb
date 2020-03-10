@@ -6,10 +6,11 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
-
+    <script src="/js/editormd.min.js"></script>
 
 </head>
 <body id="publish">
@@ -27,11 +28,23 @@
                     <input type="text" class="form-control" th:value="${title}" name="title" id="title"
                            placeholder="问题标题" autocomplete="off">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="question-editor">
                     <label for="description">问题补充</label>
-                    <textarea name="description" id="description" th:text="${description}" class="form-control"
+                    <textarea name="description" id="description" th:text="${description}" style="display: none;"
+                              class="form-control"
                               cols="30" rows="10" autocomplete="off"></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("question-editor", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            watch:false,
+                            placeholder:"问题描述"
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
                     <input type="text" class="form-control" th:value="${tag}" name="tag" id="tag"
@@ -40,15 +53,18 @@
                     <div id="select-tag" class="publish-tag-tab">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" th:each="category,categoryStat : ${tags}" th:class="${categoryStat.first ? 'active':''}">
+                            <li role="presentation" th:each="category,categoryStat : ${tags}"
+                                th:class="${categoryStat.first ? 'active':''}">
                                 <a th:href="${'#'+category.categoryName}" aria-controls="home" role="tab"
                                    data-toggle="tab" th:text="${category.categoryName}"></a>
                             </li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div role="tabpanel" th:class="${categoryStat.first ? 'active tab-pane':'tab-pane'}" th:each="category,categoryStat:${tags}" th:id="${category.categoryName}">
-                                <span class="label label-info" th:each="tag:${category.tags}" onclick="selectTag(this)" th:data-tag="${tag}">
+                            <div role="tabpanel" th:class="${categoryStat.first ? 'active tab-pane':'tab-pane'}"
+                                 th:each="category,categoryStat:${tags}" th:id="${category.categoryName}">
+                                <span class="label label-info" th:each="tag:${category.tags}" onclick="selectTag(this)"
+                                      th:data-tag="${tag}">
                                     <span class="glyphicon glyphicon-tags" th:text="${'  '+tag}"></span>
                                 </span>
                             </div>

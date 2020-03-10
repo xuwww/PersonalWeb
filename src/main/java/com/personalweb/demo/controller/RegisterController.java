@@ -67,7 +67,7 @@ public class RegisterController {
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(user.getGmtCreate());
         user.setToken(UUID.randomUUID().toString());
-        user.setAvatarUrl("/imgs/defaultUser.png");
+        user.setAvatarUrl("/images/defaultUser.png");
         userMapper.insert(user);
         return "redirect:/signIn";
     }

@@ -1,7 +1,10 @@
 package com.personalweb.demo.controller;
 
+import com.personalweb.demo.dto.NotificationDTO;
 import com.personalweb.demo.dto.PaginationDTO;
+import com.personalweb.demo.dto.QuestionDTO;
 import com.personalweb.demo.model.User;
+import com.personalweb.demo.service.NotificationService;
 import com.personalweb.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,9 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model,
@@ -31,13 +37,15 @@ public class ProfileController {
         if ("question".equals(action)) {
             model.addAttribute("section", "question");
             model.addAttribute("sectionName", "我的提问");
+            PaginationDTO<QuestionDTO> paginationDTO = questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         } else if ("replies".equals(action)) {
+            PaginationDTO<NotificationDTO> paginationDTO = notificationService.list(user.getId(), page, size);
+
+            model.addAttribute("pagination",paginationDTO);
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
         }
-
-        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination", paginationDTO);
         return "profile";
     }
 }
