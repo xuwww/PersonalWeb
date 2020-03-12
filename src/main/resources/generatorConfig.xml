@@ -8,10 +8,10 @@
 
 
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
-        <jdbcConnection driverClass="org.h2.Driver"
-                        connectionURL="jdbc:h2:E:/project/PersonalWeb_db/community"
-                        userId="sa"
-                        password="123">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://47.99.198.217:3306/personalweb"
+                        userId="root"
+                        password="xzorz065537">
         </jdbcConnection>
 
         <javaTypeResolver>

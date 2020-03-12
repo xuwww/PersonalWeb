@@ -69,6 +69,7 @@ public class CommentService {
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
+            comment.setCommentCount(0);
             commentMapper.insert(comment);
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
@@ -77,14 +78,17 @@ public class CommentService {
         }
     }
 
-    private void createNotify(Comment comment, Long commentator, String notifierName, String outerTitle, int notificationType,Long outerId) {
+    private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, int notificationType,Long outerId) {
+        if (receiver == comment.getCommentator()) {
+            return;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationType);
         notification.setOuterId(outerId);
         notification.setNotifier(comment.getCommentator());
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
-        notification.setReceiver(commentator);
+        notification.setReceiver(receiver);
         notification.setOuterTitle(outerTitle);
         notification.setNotifierName(notifierName);
         notificationMapper.insert(notification);
