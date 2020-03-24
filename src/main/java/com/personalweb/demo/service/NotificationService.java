@@ -73,6 +73,7 @@ public class NotificationService {
         return notificationMapper.countByExample(notificationExample);
     }
 
+    //查询id用户
     public NotificationDTO read(Long id, User user) {
         Notification notification = notificationMapper.selectByPrimaryKey(id);
         if(null == notification){

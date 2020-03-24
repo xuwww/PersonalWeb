@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 @Controller
 public class ProfileController {
@@ -26,9 +27,9 @@ public class ProfileController {
 
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
-                          Model model,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
                           @RequestParam(name = "size", defaultValue = "5") Integer size,
+                          Model model,
                           HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");
         if(null == user){
@@ -45,7 +46,29 @@ public class ProfileController {
             model.addAttribute("pagination",paginationDTO);
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
+        }else if("category".equals(action.substring(0,8))){
+            int category=Integer.parseInt(action.substring(9));
+            PaginationDTO<QuestionDTO> paginationDTO = questionService.listByCategory(user.getId(), category,page, size);
+            model.addAttribute("pagination",paginationDTO);
+            model.addAttribute("section",action);
         }
         return "profile";
     }
+
+/*    @GetMapping("/profile/question/{categoryId}")
+    public String category(@PathVariable(name ="categoryId") int category,
+                           @RequestParam(name = "page", defaultValue = "1") Integer page,
+                           @RequestParam(name = "size", defaultValue = "5") Integer size,
+                           Model model,
+                           HttpServletRequest request){
+        User user= (User)request.getSession().getAttribute("user");
+        if(null == user){
+            return "redirect:/signIn";
+        }
+
+        PaginationDTO<QuestionDTO> paginationDTO = questionService.listByCategory(user.getId(), category,page, size);
+        model.addAttribute("pagination",paginationDTO);
+        model.addAttribute("section","category");
+        return "profile";
+    }*/
 }

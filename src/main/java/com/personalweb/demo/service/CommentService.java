@@ -97,7 +97,7 @@ public class CommentService {
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
-        commentExample.setOrderByClause("gmt_create desc");
+//排序            commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
 
         if (comments.size() == 0) {

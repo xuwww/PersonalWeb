@@ -32,7 +32,7 @@ public class QuestionService {
 
     @Autowired
     private QuestionExtMapper questionExtMapper;
-
+//
     public PaginationDTO<QuestionDTO> list(Integer page, Integer size) {
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
@@ -157,5 +157,32 @@ public class QuestionService {
             BeanUtils.copyProperties(q, questionDTO);
             return questionDTO;
         }).collect(Collectors.toList());
+    }
+
+    public PaginationDTO<QuestionDTO> listByCategory(Long userId, int categoryId, int page, int size) {
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
+        int totalPage;
+        QuestionExample example = new QuestionExample();
+        example.createCriteria().andCreatorEqualTo(userId).andCategoryEqualTo(categoryId);
+        int totalCount = (int) questionMapper.countByExample(example);
+
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
+        }
+        if (page < 1 || totalPage == 0) {
+            page = 1;
+        } else if (page > totalPage) {
+            page = totalPage;
+        }
+
+        paginationDTO.setPagination(totalPage, page);
+
+        int offset = size * (page - 1);
+        QuestionExample example1 = new QuestionExample();
+        example1.createCriteria().andCreatorEqualTo(userId).andCategoryEqualTo(categoryId);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
+        return getPaginationDTO(paginationDTO, questions);
     }
 }

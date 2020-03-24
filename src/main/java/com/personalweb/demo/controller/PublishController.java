@@ -47,6 +47,8 @@ public class PublishController {
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
             @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "isPublic", defaultValue = "0") int isPublic,
+            @RequestParam(value = "category") int category,
             HttpServletRequest request,
             Model model) {
         User user = (User) request.getSession().getAttribute("user");
@@ -58,6 +60,7 @@ public class PublishController {
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
         model.addAttribute("tags", TagCache.get());
+        model.addAttribute("isPublic",isPublic);
 
         if (title == null || title.equals("")) {
             model.addAttribute("error", "标题不能为空");
@@ -84,6 +87,8 @@ public class PublishController {
         question.setDescription(description);
         question.setCreator(user.getId());
         question.setId(id);
+        question.setIsPublic(isPublic);
+        question.setCategory(category);
         questionService.createOrUpdate(question);
         return "redirect:/";
     }

@@ -59,7 +59,7 @@
             </div>
             <!--回复-->
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-comment-1">
                 <h3>
                     <span th:text="${question.commentCount}"></span> 个回复
                 </h3>
@@ -84,7 +84,7 @@
                                     <span th:text="${comment.commentCount}"></span>
                                 </span>
                                 <span class="pull-right"
-                                      th:text="${#dates.format(comment.gmtCreate,'yyyy-MMMM-dd')}"></span>
+                                      th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
                             </div>
 
                             <!--二级评论-->
@@ -92,7 +92,7 @@
                                  th:id="${'comment-'+comment.id}">
 
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:id="${'comment-input-'+comment.id}">
                                     <input type="text" class="form-control" placeholder="评论一下..."
                                            th:id="${'input-'+comment.id}">
                                     <button type="button" class="btn btn-success pull-right" onclick="comment(this)"
@@ -107,26 +107,24 @@
 
             <!--回复框-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="session.user != null">
-                <h3>
-                    回复
-                </h3>
+                <h3>回复</h3>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-rounded"
+                                <img class="media-object img-rounded" id="user-src"
                                      th:src="${session.user.avatarUrl}" alt="www">
                             </a>
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">
-                                <span th:text="${session.user.name}"></span>
+                                <span id="user-name" th:text="${session.user.name}"></span>
                             </h4>
                         </div>
                     </div>
                     <input type="hidden" id="question_id" th:value="${question.id}">
-                    <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
+                    <textarea class="form-control comment" rows="6" id="comment-content" required></textarea>
                     <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
                 </div>
             </div>

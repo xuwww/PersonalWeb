@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,6 +38,9 @@ public class SessionInterceptor implements HandlerInterceptor {
                         request.getSession().setAttribute("user", users.get(0));
                         Long unreadCount = notificationService.unreadCount(users.get(0).getId());
                         request.getSession().setAttribute("unreadCount",unreadCount);
+                        String category = users.get(0).getCategories();
+                        String[] categories= category.split(",");
+                        request.getSession().setAttribute("categories",categories);
                     }
                     break;
                 }
