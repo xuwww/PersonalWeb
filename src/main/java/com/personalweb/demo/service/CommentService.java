@@ -79,7 +79,7 @@ public class CommentService {
     }
 
     private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, int notificationType,Long outerId) {
-        if (receiver == comment.getCommentator()) {
+        if (receiver.equals(comment.getCommentator())) {
             return;
         }
         Notification notification = new Notification();

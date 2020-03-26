@@ -2,7 +2,7 @@ package com.personalweb.demo.exception;
 
 public enum CustomizeErrorCode implements ICustomizeErrorCode{
 
-
+    UNKNOWN_ERROR(2000,"未知错误"),
     QUESTION_NOT_FOUND(2001,"问题不存在"),
     TARGET_PARAM_NOT_FOUND(2002,"未选中任何问题或评论进行回复"),
     NO_LOGIN(2003,"未登录"),
@@ -12,6 +12,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     CONTENT_IS_EMPTY(2007,"输入内容不能为空"),
     NOT_ALLOWED(2008,"没有权限"),
     NOTIFICATION_NOT_FOUND(2009,"消息不存在"),
+    CATEGORY_REPEAT(2010,"分类已存在"),
+    NO_USER(2011,"用户不存在"),
+    WRONG_PASSWORD(2012,"密码错误"),
     ;
 
     @Override

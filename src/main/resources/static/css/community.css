@@ -126,6 +126,17 @@ body {
     color: #499ef3;
 }
 
+.nav-img{
+    width: 25px;
+}
+
+.profile-top{
+    padding-top: 10px;
+}
+
+.profile-question{
+    padding-top: 20px;
+}
 .comments {
     padding-bottom: 5px;
     margin-bottom: 15px;

@@ -35,7 +35,9 @@ public class QuestionService {
 //
     public PaginationDTO<QuestionDTO> list(Integer page, Integer size) {
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        QuestionExample example = new QuestionExample();
+        example.createCriteria().andIsPublicEqualTo(true);
+        Integer totalCount = (int) questionMapper.countByExample(example);
         int totalPage;
 
         if (totalCount % size == 0) {
@@ -51,6 +53,7 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
         int offset = size * (page - 1);//展示开始数目
         QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andIsPublicEqualTo(true);
         questionExample.setOrderByClause("gmt_create desc");
         List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));
         return getPaginationDTO(paginationDTO, questions);
@@ -94,6 +97,7 @@ public class QuestionService {
         int offset = size * (page - 1);
         QuestionExample example1 = new QuestionExample();
         example1.createCriteria().andCreatorEqualTo(userId);
+        example1.setOrderByClause("gmt_modified desc");
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
         return getPaginationDTO(paginationDTO, questions);
     }
@@ -182,6 +186,7 @@ public class QuestionService {
         int offset = size * (page - 1);
         QuestionExample example1 = new QuestionExample();
         example1.createCriteria().andCreatorEqualTo(userId).andCategoryEqualTo(categoryId);
+        example1.setOrderByClause("gmt_modified desc");
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
         return getPaginationDTO(paginationDTO, questions);
     }

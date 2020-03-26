@@ -24,16 +24,49 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/publish">发布</a></li>
                     <li class="dropdown" th:if="${session.user != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span th:text="${session.user.getName()}"></span><span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false"><img class="img-circle nav-img" th:src="${session.user.avatarUrl}"
+                                                      th:alt="${session.user.name}"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/profile/question">我的问题</a></li>
-                            <li><a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a></li>
-                            <li role="separator" class="divider" ></li>
+                            <li><a href="/profile/replies">通知 <span class="badge"
+                                                                    th:text="${session.unreadCount}"></span></a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="/logout">退出</a></li>
                         </ul>
                     </li>
                     <li th:if="${session.user == null}">
-                        <a href="/signIn">登录/注册</a>
+                        <!--登录-->
+                        <a type="button" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
+                           style="cursor: pointer">登录</a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="exampleModalLabel">登录</h4>
+                                    </div>
+                                    <form>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="login-user-name" class="control-label" >用户名</label>
+                                                <input type="text" class="form-control" id="login-user-name" placeholder="用户名" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="login-user-password" class="control-label" >密码</label>
+                                                <input type="password" class="form-control" id="login-user-password" placeholder="密码" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="/register">没有帐号？注册一个</a>
+                                            <button type="button" class="btn btn-primary" id="login">登录</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>

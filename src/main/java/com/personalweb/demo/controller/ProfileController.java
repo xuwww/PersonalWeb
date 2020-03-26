@@ -1,17 +1,16 @@
 package com.personalweb.demo.controller;
 
-import com.personalweb.demo.dto.NotificationDTO;
-import com.personalweb.demo.dto.PaginationDTO;
-import com.personalweb.demo.dto.QuestionDTO;
+import com.alibaba.fastjson.JSONObject;
+import com.personalweb.demo.dto.*;
+import com.personalweb.demo.exception.CustomizeErrorCode;
 import com.personalweb.demo.model.User;
 import com.personalweb.demo.service.NotificationService;
 import com.personalweb.demo.service.QuestionService;
+import com.personalweb.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
@@ -24,6 +23,9 @@ public class ProfileController {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
@@ -55,20 +57,20 @@ public class ProfileController {
         return "profile";
     }
 
-/*    @GetMapping("/profile/question/{categoryId}")
-    public String category(@PathVariable(name ="categoryId") int category,
-                           @RequestParam(name = "page", defaultValue = "1") Integer page,
-                           @RequestParam(name = "size", defaultValue = "5") Integer size,
-                           Model model,
-                           HttpServletRequest request){
-        User user= (User)request.getSession().getAttribute("user");
+    @ResponseBody
+    @RequestMapping(value="/profile/category", method=RequestMethod.POST)
+    public Object categoryAdd(@RequestBody JSONObject jsonObject,
+                              HttpServletRequest request){
+        User user=(User)request.getSession().getAttribute("user");
         if(null == user){
-            return "redirect:/signIn";
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        CustomizeErrorCode customizeErrorCode = userService.categoryAdd(user, jsonObject);
+        if (customizeErrorCode != null) {
+            return ResultDTO.errorOf(customizeErrorCode);
+        }else{
+            return ResultDTO.successOf();
         }
 
-        PaginationDTO<QuestionDTO> paginationDTO = questionService.listByCategory(user.getId(), category,page, size);
-        model.addAttribute("pagination",paginationDTO);
-        model.addAttribute("section","category");
-        return "profile";
-    }*/
+    }
 }

@@ -1,16 +1,3 @@
-//AjAX
-function ajaxGet(url, fun) {
-    let xmlHttp;
-    if (window.XMLHttpRequest) {
-        xmlHttp = new XMLHttpRequest();
-    } else {
-        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlHttp.onreadystatechange = fun;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send();
-}
-
 //提交回复
 function post() {
     var questionId = $("#question_id").val();
@@ -22,7 +9,10 @@ function post() {
 
 //评论拼接
 function commentFlash(id, type, content) {
-    let src = $("#user-src").attr("src");
+    if (!content) {
+        return;
+    }
+    let src = $("#user-src").prop("src");
     let name = $("#user-name").text();
 
     var mediaLeftElement = $("<div/>", {
@@ -56,11 +46,11 @@ function commentFlash(id, type, content) {
     }).append(mediaElement);
 
     if (type === 1) {
-        $("#"+id).append(commentElement);
+        $("#" + id).append(commentElement);
         $("#comment-content").val("");
-}else if(type === 2){
-        $("#comment-input-"+id).before(commentElement);
-        $("#input-"+id).val("");
+    } else if (type === 2) {
+        $("#comment-input-" + id).before(commentElement);
+        $("#input-" + id).val("");
     }
 }
 
@@ -84,7 +74,7 @@ function comment2Target(targetId, type, content) {
                 // window.location.reload();
             } else {
                 if (response.code === 2003) {
-                    var isAccepted = confirm("response.message");
+                    const isAccepted = confirm("response.message");
                     if (isAccepted) {
                         window.open("/signIn");
                         window.localStorage.setItem("closable", true);
@@ -183,3 +173,33 @@ function selectTag(e) {
 function showSelectTag() {
     $("#select-tag").show();
 }
+
+//登录
+$(document).ready(function () {
+    $("#login").click(function () {
+        let userId = $("#login-user-name").val();
+        let userPassword = $("#login-user-password").val();
+        if (userPassword === "" || userPassword == null || userId === "" || userId == null) {
+            alert("内容不能为空");
+            return;
+        }
+        $.ajax({
+            type: "post",
+            url: "/signIn",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "userId": userId,
+                "userPassword": userPassword
+            }),
+            success: function (response) {
+                if (response.code === 200) {
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+                console.log(response);
+            },
+            dataType: "json"
+        })
+    })
+});

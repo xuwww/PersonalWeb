@@ -32,6 +32,8 @@ public class PublishController {
         model.addAttribute("tag", question.getTag());
         model.addAttribute("id", id);
         model.addAttribute("tags", TagCache.get());
+        model.addAttribute("category",question.getCategory());
+        model.addAttribute("isPublic",question.getIsPublic());
         return "publish";
     }
 
@@ -47,7 +49,7 @@ public class PublishController {
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
             @RequestParam(value = "id", required = false) Long id,
-            @RequestParam(value = "isPublic", defaultValue = "0") int isPublic,
+            @RequestParam(value = "isPublic", defaultValue = "false") boolean isPublic,
             @RequestParam(value = "category") int category,
             HttpServletRequest request,
             Model model) {
@@ -60,6 +62,7 @@ public class PublishController {
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
         model.addAttribute("tags", TagCache.get());
+        model.addAttribute("category", category);
         model.addAttribute("isPublic",isPublic);
 
         if (title == null || title.equals("")) {

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/community.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/profile.js"></script>
+    <script src="/js/community.js"></script>
 
 </head>
 <body>
@@ -15,12 +17,44 @@
 <div class="container-fluid main profile">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span th:text=" ${sectionName}"></span></h2>
-            <a th:class="${section == 'question'}? 'btn btn-default active' : 'btn btn-default'" href="/profile/question" role="button" >全部</a>
-            <a th:class="${section == 'category-'+categoryStat.index}? 'btn btn-default active' : 'btn btn-default'" th:href="@{'/profile/category-'+${categoryStat.index}}" role="button" th:each="category:${session.categories}" th:text="${category}"></a>
-            <hr>
+            <!--分类栏-->
+            <ul class="nav nav-tabs profile-top" role="tablist">
+                <li role="presentation" th:class="${section == 'question'}? 'active' : ''"><a
+                        href="/profile/question" role="tab">全部</a></li>
+                <li role="presentation" th:each="category:${session.categories}"
+                    th:class="${section == 'category-'+categoryStat.index}? 'active' : ''">
+                    <a th:href="@{'/profile/category-'+${categoryStat.index}}" role="tab"
+                       th:text="${category}"></a></li>
+                <li role="presentation"><a type="button" role="tab" data-toggle="modal" data-target="#exampleModal"
+                                           data-whatever="@mdo" style="cursor: pointer;"><span
+                        class="glyphicon glyphicon-plus"></span></a></li>
+            </ul>
+            <!--弹出框-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" id="category-close" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="exampleModalLabel">添加分类</h4>
+                        </div>
+                        <form>
+                        <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="category-name" class="control-label">分类名</label>
+                                    <input type="text" class="form-control" id="category-name" placeholder="输入一个新分类名" autocomplete="off" required>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="category-input">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <!--问题-->
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section =='question'}">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 profile-question" th:if="${section =='question'}">
                 <div class="media" th:each="question:${pagination.data}">
                     <div class="media-left">
                         <a href="#">
@@ -44,14 +78,16 @@
                     <div class="media-body">
                         <h4 class="media-heading">
                             <span th:text="${notification.notifierName+' '+notification.typeName+' '}"></span>
-                            <a th:href="@{'/notification/'+${notification.id}}" th:text="${notification.outerTitle}"></a>
+                            <a th:href="@{'/notification/'+${notification.id}}"
+                               th:text="${notification.outerTitle}"></a>
                             <span class="label label-danger" th:if="${notification.status == 0}">未读</span>
                         </h4>
                     </div>
                 </div>
             </div>
             <!--分类-->
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section.substring(0,4) =='cate'}">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 profile-question"
+                 th:if="${section.substring(0,4) =='cate'}">
                 <div class="media" th:each="question:${pagination.data}">
                     <div class="media-left">
                         <a href="#">

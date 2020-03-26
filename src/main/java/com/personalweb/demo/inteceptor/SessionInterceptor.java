@@ -39,8 +39,11 @@ public class SessionInterceptor implements HandlerInterceptor {
                         Long unreadCount = notificationService.unreadCount(users.get(0).getId());
                         request.getSession().setAttribute("unreadCount",unreadCount);
                         String category = users.get(0).getCategories();
-                        String[] categories= category.split(",");
-                        request.getSession().setAttribute("categories",categories);
+                        if (!(category == null|| category.equals(""))) {
+                            String[] categories;
+                            categories = category.split(",");
+                            request.getSession().setAttribute("categories",categories);
+                        }
                     }
                     break;
                 }
