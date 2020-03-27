@@ -69,7 +69,7 @@ public class RegisterController {
         user.setToken(UUID.randomUUID().toString());
         user.setAvatarUrl("/images/defaultUser.png");
         userMapper.insert(user);
-        return "redirect:/signIn";
+        return "redirect:/";
     }
 
 }

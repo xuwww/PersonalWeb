@@ -35,7 +35,7 @@ public class ProfileController {
                           HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");
         if(null == user){
-            return "redirect:/signIn";
+            return "redirect:/";
         }
         if ("question".equals(action)) {
             model.addAttribute("section", "question");

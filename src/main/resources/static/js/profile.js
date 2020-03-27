@@ -2,6 +2,7 @@ $(document).ready(function () {
     $("#category-input").click(function () {
         let categoryName = $("#category-name").val();
         if(categoryName === "" || categoryName == null){
+            alert("内容不能为空");
             return;
         }
         $.ajax({
@@ -18,8 +19,7 @@ $(document).ready(function () {
                     if (response.code === 2003) {
                         const isAccepted = confirm("response.message");
                         if (isAccepted) {
-                            window.open("/signIn");
-                            window.localStorage.setItem("closable", true);
+                            $("#signIn").click();
                         }
                     } else {
                         alert(response.message());

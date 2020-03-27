@@ -76,8 +76,7 @@ function comment2Target(targetId, type, content) {
                 if (response.code === 2003) {
                     const isAccepted = confirm("response.message");
                     if (isAccepted) {
-                        window.open("/signIn");
-                        window.localStorage.setItem("closable", true);
+                        $("#signIn").click();
                     }
                 } else {
                     alert(response.message);

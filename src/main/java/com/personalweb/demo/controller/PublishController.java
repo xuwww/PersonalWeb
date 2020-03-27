@@ -56,7 +56,7 @@ public class PublishController {
         User user = (User) request.getSession().getAttribute("user");
         if (null == user) {
             model.addAttribute("error","用户未登录");
-            return "redirect:/signIn";
+            return "publish";
         }
         model.addAttribute("title", title);
         model.addAttribute("description", description);
@@ -93,6 +93,6 @@ public class PublishController {
         question.setIsPublic(isPublic);
         question.setCategory(category);
         questionService.createOrUpdate(question);
-        return "redirect:/";
+        return "redirect:/profile/question";
     }
 }
