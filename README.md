@@ -5,7 +5,7 @@
 ### Run
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 mvn compile package
-java -jar -Dspring.profile.active=production target/demo-0.0.1-SNAPSHOT.jar
+nohup java -jar -Dspring.profile.active=production target/demo-0.0.1-SNAPSHOT.jar &
 
 ###项目网址
 47.99.198.217
